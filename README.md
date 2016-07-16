@@ -1,10 +1,10 @@
 # LeFaucon
 Sistema para la identificación de posibles anomalías a nivel pulmonar.
+<br>Trabajo de grado para optar al título de Ingeniero de Sistemas.
+<br>Pontificia Universidad Javeriana
+<br>Bogotá, Colombia
+<br>2016
 <br>
-Trabajo de grado para optar al título de Ingeniero de Sistemas.
-<br>
-Pontificia Universidad Javeriana
-
 ![](https://cloud.githubusercontent.com/assets/20493334/16896741/c6ca39d2-4b61-11e6-8ef4-3e876d4567eb.png)
 
 
@@ -17,6 +17,4 @@ Pontificia Universidad Javeriana
 ##Directora de trabajo de grado:
 Ing. Andrea Del Pilar Rueda Olarte Ph.D.
 
-<br>
-<p>Bogotá, Colombia</p>
-<p>2016</p>
+
