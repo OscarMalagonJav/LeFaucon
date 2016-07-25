@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8) 
+project(ReduccionRuido)
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+add_executable(ReduccionRuido MACOSX_BUNDLE Ruido.cxx)
+target_link_libraries(ReduccionRuido ${ITK_LIBRARIES})
