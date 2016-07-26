@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8) 
+project(Sobel)
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+add_executable(Sobel MACOSX_BUNDLE Sobel.cxx)
+target_link_libraries(Sobel ${ITK_LIBRARIES})

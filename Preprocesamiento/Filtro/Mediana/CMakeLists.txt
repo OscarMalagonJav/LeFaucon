@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8) 
+project(FiltroMediana)
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+add_executable(FiltroMediana MACOSX_BUNDLE Mediana.cxx)
+target_link_libraries(FiltroMediana ${ITK_LIBRARIES})
