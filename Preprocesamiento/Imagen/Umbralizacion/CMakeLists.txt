@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8) 
+project(Umbralizacion)
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+add_executable(Umbralizacion MACOSX_BUNDLE Umbralizacion.cxx)
+target_link_libraries(Umbralizacion ${ITK_LIBRARIES})

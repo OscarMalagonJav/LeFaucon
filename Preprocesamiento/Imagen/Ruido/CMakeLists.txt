@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8) 
+project(Ruido-BinomialBlur)
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+add_executable(Ruido-BinomialBlur MACOSX_BUNDLE Ruido-BinomialBlur.cxx)
+target_link_libraries(Ruido-BinomialBlur ${ITK_LIBRARIES})
