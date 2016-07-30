@@ -1,0 +1,3 @@
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Filtro/Gaussianos/build/CMakeFiles/edit_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Filtro/Gaussianos/build/CMakeFiles/rebuild_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Filtro/Gaussianos/build/CMakeFiles/GaussianoDiscreto.dir

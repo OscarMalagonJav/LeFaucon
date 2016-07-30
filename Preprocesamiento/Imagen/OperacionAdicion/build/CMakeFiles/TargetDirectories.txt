@@ -1,0 +1,3 @@
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Imagen/OperacionAdicion/build/CMakeFiles/edit_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Imagen/OperacionAdicion/build/CMakeFiles/rebuild_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Imagen/OperacionAdicion/build/CMakeFiles/AddFilter.dir
