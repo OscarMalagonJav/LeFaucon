@@ -1,0 +1,3 @@
+/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/HistogramOperations/HistogramStretching/build/CMakeFiles/edit_cache.dir
+/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/HistogramOperations/HistogramStretching/build/CMakeFiles/rebuild_cache.dir
+/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/HistogramOperations/HistogramStretching/build/CMakeFiles/HistogramStretching.dir

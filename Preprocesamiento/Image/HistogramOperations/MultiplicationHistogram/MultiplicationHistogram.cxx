@@ -1,9 +1,7 @@
 #include "itkImage.h"
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
-#include "itkBinomialBlurImageFilter.h"
 #include "itkImageRegionConstIterator.h"
-#include <typeinfo>
 
 std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int value)
 {
@@ -11,7 +9,7 @@ std::string showParametersInfo(std::string inputImageName,std::string outputImag
   std::cout<<"Parameters"<<std::endl;
   std::cout<< "Input image name: "<< inputImageName <<std::endl;
   std::cout<< "Output image name: "<< outputImageName <<std::endl;
-  std::cout<< "Value.........: "<< variance <<std::endl
+  std::cout<< "Value.........: "<< value <<std::endl
   <<"*********************************************"<<std::endl;
   std::cout<<"Continue?...(Y/N)"<<std::endl;
   std::cin>>execute;
@@ -39,7 +37,6 @@ int main(int argc, char * argv[])
   if(execute=="y" || execute=="Y")
   {
 
-      
       ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
       reader->SetFileName( inputImageName.c_str() );
       reader->Update();
@@ -55,11 +52,7 @@ int main(int argc, char * argv[])
               ItkImageType::IndexType pixelIndex;
               pixelIndex[0] = rowIndex;
               pixelIndex[1] = columnIndex;
-                if((int)ItkResultImage->GetPixel(pixelIndex) + valor > 255){
-                  ItkResultImage->SetPixel(pixelIndex,255);
-                }else{
-                  ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) + valor));    
-                }
+              ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) * value));
           }
       }
       ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
