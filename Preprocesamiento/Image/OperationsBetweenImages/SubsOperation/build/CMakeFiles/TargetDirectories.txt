@@ -1,0 +1,3 @@
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Image/OperationsBetweenImages/SubsOperation/build/CMakeFiles/edit_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Image/OperationsBetweenImages/SubsOperation/build/CMakeFiles/rebuild_cache.dir
+/home/andres/Escritorio/LeFaucon/LeFaucon/Preprocesamiento/Image/OperationsBetweenImages/SubsOperation/build/CMakeFiles/SubOperation.dir

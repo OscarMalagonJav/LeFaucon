@@ -4,6 +4,7 @@
 #include "itkImage.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkAddImageFilter.h"
+#include "itkVector.h"
 #include <typeinfo>
 
 typedef itk::Image<unsigned char, 2>  ImageType;
@@ -14,29 +15,30 @@ typedef itk::AddImageFilter <ImageType, ImageType, ImageType > AddImageFilterTyp
 
 int main(int argc, char * argv[])
 {
-	//Uso: ./Filtro nombreSalida.extension imgEntrada1 imgEntrada2 ... imgEntradaN
+//Uso: ./Filtro nombreSalida.extension  imgEntrada1 imgEntrada2 ... imgEntradaN \0	
 	ImageType::Pointer image1 = ImageType::New();
 	ImageType::Pointer image2 = ImageType::New();
-  	ReaderType::Pointer lector = ReaderType::New();
-  	WriterType::Pointer escritor = WriterType::New();
-
+	ReaderType::Pointer lector = ReaderType::New();
+	WriterType::Pointer escritor = WriterType::New();
 	std::string img1 = argv[2];
 	std::string img2 = argv[3];
+	
 	std::string imgSalida = argv[1];
-
+	
 	lector->SetFileName(img1.c_str());
 	lector->Update();
 	image1 = lector->GetOutput();
+
 	lector->SetFileName(img2.c_str());
 	lector->Update();
 	image2 = lector->GetOutput();
-
 	
 	AddImageFilterType::Pointer addFilter = AddImageFilterType::New ();
-  	addFilter->SetInput1(image1);
-  	addFilter->SetInput2(image2);
-  	addFilter->Update();
-
+		  	
+	addFilter->SetInput1(image1);
+	addFilter->SetInput2(image2);
+	addFilter->Update();
+	
 	escritor->SetFileName(imgSalida);
 	escritor->SetInput(addFilter->GetOutput());
 	escritor->Update();
