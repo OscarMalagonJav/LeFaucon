@@ -2,8 +2,8 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 #include "itkImageRegionConstIterator.h"
-
-std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int value)
+#include "itkRescaleIntensityImageFilter.h"
+std::string showParametersInfo(std::string inputImageName,std::string outputImageName, float value)
 {
   std::string execute= "";
   std::cout<<"Parameters"<<std::endl;
@@ -21,6 +21,7 @@ int main(int argc, char * argv[])
   typedef itk::Image< unsigned char, 2 >   ItkImageType;
   typedef itk::ImageFileReader< ItkImageType >  ImageFileReaderType;
   typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
+  typedef itk::RescaleIntensityImageFilter< ItkImageType, ItkImageType > RescaleFilterType;
 
   if( argc < 4 )
     {
@@ -32,7 +33,7 @@ int main(int argc, char * argv[])
   //Argumentos
   std::string inputImageName = argv[1];
   std::string outputImageName = argv[2];
-  int value = atoi(argv[3]);
+  float value = atof(argv[3]);
   std::string execute = showParametersInfo(inputImageName, outputImageName, value);
   if(execute=="y" || execute=="Y")
   {
@@ -55,15 +56,21 @@ int main(int argc, char * argv[])
               ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) * value));
           }
       }
+
+      RescaleFilterType::Pointer rescaleFilter = RescaleFilterType::New();
+      rescaleFilter->SetInput(ItkResultImage);
+      rescaleFilter->SetOutputMinimum(0);
+      rescaleFilter->SetOutputMaximum(255);
+
       ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
       writer->SetFileName(outputImageName);
-      writer->SetInput(ItkResultImage);
+      writer->SetInput(rescaleFilter->GetOutput());
       writer->Update();
       return EXIT_SUCCESS;
 
   }else{
-    
+
     return EXIT_FAILURE;
-  
+
   }
 }

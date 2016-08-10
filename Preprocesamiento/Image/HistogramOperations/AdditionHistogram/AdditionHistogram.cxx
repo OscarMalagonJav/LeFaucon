@@ -4,6 +4,12 @@
 #include "itkBinomialBlurImageFilter.h"
 #include "itkImageRegionConstIterator.h"
 #include <typeinfo>
+#include "itkRescaleIntensityImageFilter.h"
+
+typedef itk::Image< unsigned char, 2 >   ItkImageType;
+typedef itk::ImageFileReader< ItkImageType >  ImageFileReaderType;
+typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
+typedef itk::RescaleIntensityImageFilter< ItkImageType, ItkImageType > RescaleFilterType;
 
 std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int value)
 {
@@ -20,10 +26,6 @@ std::string showParametersInfo(std::string inputImageName,std::string outputImag
 
 int main(int argc, char * argv[])
 {
-  typedef itk::Image< unsigned char, 2 >   ItkImageType;
-  typedef itk::ImageFileReader< ItkImageType >  ImageFileReaderType;
-  typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
-
   if( argc < 4 )
     {
     std::cerr << "Usage" << std::endl;
@@ -31,7 +33,6 @@ int main(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  //Argumentos
   std::string inputImageName = argv[1];
   std::string outputImageName = argv[2];
   int value = atoi(argv[3]);
@@ -39,7 +40,7 @@ int main(int argc, char * argv[])
   if(execute=="y" || execute=="Y")
   {
 
-      
+
       ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
       reader->SetFileName( inputImageName.c_str() );
       reader->Update();
@@ -58,19 +59,25 @@ int main(int argc, char * argv[])
                 if((int)ItkResultImage->GetPixel(pixelIndex) + value > 255){
                   ItkResultImage->SetPixel(pixelIndex,255);
                 }else{
-                  ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) + value));    
+                  ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) + value));
                 }
           }
       }
+
+      RescaleFilterType::Pointer rescaleFilter = RescaleFilterType::New();
+      rescaleFilter->SetInput(ItkResultImage);
+      rescaleFilter->SetOutputMinimum(0);
+      rescaleFilter->SetOutputMaximum(255);
+
       ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
       writer->SetFileName(outputImageName);
-      writer->SetInput(ItkResultImage);
+      writer->SetInput(rescaleFilter->GetOutput());
       writer->Update();
       return EXIT_SUCCESS;
 
   }else{
-    
+
     return EXIT_FAILURE;
-  
+
   }
 }
