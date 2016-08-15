@@ -1,3 +1,0 @@
-/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/Thresholding/build/CMakeFiles/rebuild_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/Thresholding/build/CMakeFiles/edit_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Preprocesamiento/Image/Thresholding/build/CMakeFiles/Thresholding.dir
