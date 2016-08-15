@@ -1,0 +1,28 @@
+High pass 3x3:
+              -1/9 -1/9 -1/9 -1/9 8/9 -1/9 -1/9 -1/9 -1/9
+Laplacian 3x3:
+              0 -1 0 -1 4 -1 0 -1 0
+Gaussian 3x3:
+              1/16 1/8 1/16 1/8 1/4 1/8 1/16 1/8 1/16
+Gaussian 5X5:
+              1/273(1 4 7 4 1 4 16 26 16 4 7 26 41 26 7 4 16 26 16 4 1 4 7 4 1)
+High boost 3x3:
+              -c -c -c -c 8c+1 -c -c -c -c
+Orientation 3x3:
+
+Texture 3x3:
+
+Contrast 3x3:
+
+LoG 3x3:
+
+Gradientes 3x3:
+              Sobel bottom: -1 -2 -1 0 0 0 1 2 1
+              Sobel top:     1 2 1 0 0 0 -1 -2 -1
+              Sobel right:  -1 0 1 -2 0 2 -1 0 1
+              Sobel left:    1 0 -1 2 0 -2 1 0 -1
+
+              Prewitt bottom: -1 -1 -1 0 0 0 1 1 1
+              Prewitt top:     1 1 1 0 0 0 -1 -1 -1
+              Prewitt right:  -1 0 1 -1 0 1 -1 0 1
+              Prewitt left:    1 0 -1 1 0 -1 1 0 -1    

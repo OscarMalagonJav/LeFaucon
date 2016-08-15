@@ -21,7 +21,6 @@ int main(int argc, char * argv[])
   typedef itk::Image< unsigned char, 2 >   ItkImageType;
   typedef itk::ImageFileReader< ItkImageType >  ImageFileReaderType;
   typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
-  typedef itk::RescaleIntensityImageFilter< ItkImageType, ItkImageType > RescaleFilterType;
 
   if( argc < 4 )
     {
@@ -53,18 +52,17 @@ int main(int argc, char * argv[])
               ItkImageType::IndexType pixelIndex;
               pixelIndex[0] = rowIndex;
               pixelIndex[1] = columnIndex;
-              ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) * value));
+              if((int)itkInputImage->GetPixel(pixelIndex)*value >=255)
+              {
+                ItkResultImage->SetPixel(pixelIndex, (int)255);
+              }else{
+                ItkResultImage->SetPixel(pixelIndex, ((int)itkInputImage->GetPixel(pixelIndex) * value));
+              }
           }
       }
-
-      RescaleFilterType::Pointer rescaleFilter = RescaleFilterType::New();
-      rescaleFilter->SetInput(ItkResultImage);
-      rescaleFilter->SetOutputMinimum(0);
-      rescaleFilter->SetOutputMaximum(255);
-
       ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
       writer->SetFileName(outputImageName);
-      writer->SetInput(rescaleFilter->GetOutput());
+      writer->SetInput(ItkResultImage);
       writer->Update();
       return EXIT_SUCCESS;
 

@@ -53,9 +53,8 @@ minMax findMinAndMaxValues(ItkImageType::Pointer img)
 ItkImageType::Pointer applyStretchingToTheImage(ItkImageType::Pointer img, minMax minmax){
   ItkImageType::RegionType region = img->GetLargestPossibleRegion();
   ItkImageType::SizeType regionSize = region.GetSize();
-  int factor = 255 / (minmax.maximum - minmax.minimum); 
+  int factor = 255 / (minmax.maximum - minmax.minimum);
   ItkImageType::Pointer imgResult = ItkImageType::New();
-
   for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++)
       {
           for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++)
@@ -63,7 +62,7 @@ ItkImageType::Pointer applyStretchingToTheImage(ItkImageType::Pointer img, minMa
             ItkImageType::IndexType pixelIndex;
             pixelIndex[0] = rowIndex;
             pixelIndex[1] = columnIndex;
-            imgResult->SetPixel(pixelIndex,((int)itkInputImage->GetPixel(pixelIndex)-minmax.minimum) * factor);
+            imgResult->SetPixel(pixelIndex,((int)img->GetPixel(pixelIndex)-minmax.minimum) * factor);
           }
       }
       return imgResult;
@@ -89,7 +88,7 @@ int main(int argc, char * argv[])
       reader->Update();
       minMax minmax = findMinAndMaxValues(reader->GetOutput());
       ItkImageType::Pointer ItkResultImage;
-      
+
       if(minmax.minimum ==0 && minmax.maximum==255)
       {
         std::cout<<"It is not possible to stretch the histogram because it is already stretched"<<std::endl;
@@ -104,8 +103,8 @@ int main(int argc, char * argv[])
       return EXIT_SUCCESS;
 
   }else{
-    
+
     return EXIT_FAILURE;
-  
+
   }
 }
