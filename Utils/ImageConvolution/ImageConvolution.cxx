@@ -2,21 +2,24 @@
 #include "itkImageFileReader.h"
 #include "itkConvolutionImageFilter.h"
 #include "itkImageFileWriter.h"
+#include "itkCastImageFilter.h"
 
-typedef itk::Image<float, 2> ItkImageType;
-typedef itk::ImageFileReader<ItkImageType>        ImageFileReaderType;
-typedef itk::ConvolutionImageFilter<ItkImageType> ConvolveItkImageType;
-typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
+typedef itk::Image<float, 2> ItkFloatImageType;
+typedef itk::Image<unsigned char, 2>  UnsignedCharImageType;
+typedef itk::CastImageFilter< ItkFloatImageType, UnsignedCharImageType > CastFilterType;
+typedef itk::ImageFileReader<ItkFloatImageType>        ImageFileReaderType;
+typedef itk::ConvolutionImageFilter<ItkFloatImageType> ConvolveItkFloatImageType;
+typedef itk::ImageFileWriter<UnsignedCharImageType> ImageFileWriterType;
 
-  void CreateKernel(ItkImageType::Pointer kernel, int width, float kernelValues[])
+  void CreateKernel(ItkFloatImageType::Pointer kernel, int width, float kernelValues[])
   {
-    ItkImageType::IndexType start;
+    ItkFloatImageType::IndexType start;
     start.Fill(0);
 
-    ItkImageType::SizeType size;
+    ItkFloatImageType::SizeType size;
     size.Fill(width);
 
-    ItkImageType::RegionType region;
+    ItkFloatImageType::RegionType region;
     region.SetSize(size);
     region.SetIndex(start);
 
@@ -24,12 +27,12 @@ typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
     kernel->Allocate();
 
       int indexArray =0;
-      ItkImageType::SizeType regionSize = region.GetSize();
+      ItkFloatImageType::SizeType regionSize = region.GetSize();
       for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++)
         {
             for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++)
             {
-              ItkImageType::IndexType pixelIndex;
+              ItkFloatImageType::IndexType pixelIndex;
               pixelIndex[0] = rowIndex;
               pixelIndex[1] = columnIndex;
         	    kernel->SetPixel(pixelIndex,(float)kernelValues[indexArray]);
@@ -72,20 +75,25 @@ typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
       {
     	   kernelValues[i] = atof(argv[i+4]);
       }
-        ItkImageType::Pointer kernel = ItkImageType::New();
+        ItkFloatImageType::Pointer kernel = ItkFloatImageType::New();
         CreateKernel(kernel, width, kernelValues);
         ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
         reader->SetFileName( argv[1] );
-        ConvolveItkImageType::Pointer convolutionFilter = ConvolveItkImageType::New();
+        ConvolveItkFloatImageType::Pointer convolutionFilter = ConvolveItkFloatImageType::New();
         convolutionFilter->SetInput(reader->GetOutput());
         #if ITK_VERSION_MAJOR >= 4
         convolutionFilter->SetKernelImage(kernel);
         #else
         convolutionFilter->SetImageKernelInput(kernel);
         #endif
+
+        CastFilterType::Pointer castFilter = CastFilterType::New();
+        castFilter->SetInput(convolutionFilter->GetOutput());
+
+
         ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
         writer->SetFileName(argv[2]);
-        writer->SetInput(convolutionFilter->GetOutput());
+        writer->SetInput(castFilter->GetOutput());
         writer->Update();
         return EXIT_SUCCESS;
   }else{

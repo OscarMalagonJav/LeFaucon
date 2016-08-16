@@ -2,7 +2,28 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 #include "itkSobelEdgeDetectionImageFilter.h"
-#include <typeinfo>
+#include "itkCastImageFilter.h"
+
+typedef itk::Image<unsigned char, 2 > ItkUnsignedCharImageType;
+typedef itk::Image<float, 2 > ItkFloatImageType;
+typedef itk::CastImageFilter< ItkFloatImageType, ItkUnsignedCharImageType > CastFilterType;    
+typedef itk::ImageFileReader<ItkFloatImageType> ImageFileReaderType;
+typedef itk::ImageFileWriter<ItkUnsignedCharImageType> ImageFileWriterType;
+typedef itk::SobelEdgeDetectionImageFilter<ItkFloatImageType, ItkFloatImageType> SobelFilterType;
+
+std::string showParameters(std::string inputImage, std::string outputImage)
+{
+  std::string execute= "";
+  std::cout<<"Parameters"<<std::endl;
+  std::cout<< "Input image: "<< inputImage <<std::endl;
+  std::cout<< "Output image: "<< outputImage <<std::endl
+  <<"*********************************************"<<std::endl;
+  std::cout<<"Execute?...(Y/N)"<<std::endl;
+  std::cin>>execute;
+  return execute;
+}
+
+
 int main(int argc, char * argv[])
 {
   
@@ -13,37 +34,26 @@ int main(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  std::string nombreIEntrada = argv[1];
-  std::string nombreISalida = argv[2];
+  std::string inputImage = argv[1];
+  std::string outputImage = argv[2];
+  std::string execute = showParameters(inputImage,outputImage);
+  
+  if(execute=="y" || execute=="Y"){
+   
+    ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
+    reader->SetFileName(inputImage);
 
-  std::string seguir= "";
-  std::cout<<"Parámetros"<<std::endl;
-  std::cout<< "Imagen de entrada: "<< nombreIEntrada <<std::endl;
-  std::cout<< "Imagen de salida.: "<< nombreISalida <<std::endl
-  <<"*********************************************"<<std::endl;
-  std::cout<<"Continuar?...(Y/N)"<<std::endl;
-  std::cin>>seguir;
-  if(seguir=="y" || seguir=="Y"){
-    typedef itk::Image<unsigned char, 2 > imagenItk;
-    typedef itk::Image<float, 2 > imagenItkFloat;    
-    typedef itk::ImageFileReader<imagenItkFloat> lector;
-    typedef itk::ImageFileWriter<imagenItkFloat> escritor;//Cambiar la imagen de salida por imagenItkFloat
-    typedef itk::SobelEdgeDetectionImageFilter<imagenItkFloat, imagenItkFloat> sobel; //Cambiar la imagen de salida por imagenItkFloat
-
-    //Segun la documentacion es mejor dejar la imagen de salida como float, sin embargo
-    //para este caso se dejó como entero para poder ver el resultado en una imagen de tipo PNG
-    lector::Pointer l = lector::New();
-    l->SetFileName(nombreIEntrada);
-    sobel::Pointer filtroSobel = sobel::New();
-    filtroSobel->SetInput( l->GetOutput() );
+    SobelFilterType::Pointer SobelFilterType = SobelFilterType::New();
+    SobelFilterType->SetInput( reader->GetOutput() );
     
-    imagenItkFloat::Pointer imgResultado = filtroSobel->GetOutput();
-    /*escritor::Pointer esc = escritor::New();
-    esc->SetFileName(nombreISalida);
-    esc->SetInput(imgResultado);
-    esc->Update();*/
+    CastFilterType::Pointer castFilter = CastFilterType::New();
+    castFilter->SetInput(SobelFilterType->GetOutput());	
 
-    //Deberia ser mas sencillo ver el resultado con VTK
+    ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
+    writer->SetFileName(outputImage);
+    writer->SetInput(castFilter->GetOutput());
+    writer->Update();
+
     return EXIT_SUCCESS;
   }else{
     return EXIT_FAILURE;
