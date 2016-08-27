@@ -1,8 +1,5 @@
-#include "itkImage.h"
-#include "itkImageFileWriter.h"
-#include "itkImageFileReader.h"
-#include "itkDiscreteGaussianImageFilter.h"
-
+#include "DiscreteGaussianFilter.h"
+/*
 std::string showParametersInfo(std::string inputImageName,std::string outputImageName, double variance)
 {
   std::string execute= "";
@@ -14,47 +11,17 @@ std::string showParametersInfo(std::string inputImageName,std::string outputImag
   std::cout<<"Continue?...(Y/N)"<<std::endl;
   std::cin>>execute;
   return execute;
-}
+}*/
 
-int main(int argc, char * argv[])
+ItkImageType::Pointer applyDiscreteGaussianFilter(std::string inputImageName,double variance)
 {
-  
-  typedef itk::Image<unsigned char, 2 > ItkImageType;
-  //typedef itk::Image<float, 2 > ItkImageTypeFloat;    
-  typedef itk::ImageFileReader<ItkImageType> ImageFileReaderType;
-  typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;//Change the output image by ItkImageTypeFloat
-  typedef itk::DiscreteGaussianImageFilter<ItkImageType, ItkImageType> discreteGaussianFilterType; //Change the output image by ItkImageTypeFloat
-
-  if( argc < 2 )
-  {
-    std::cerr << "Usage:" << std::endl;
-    std::cerr << argv[0] << " inputImage outputImage.extension variance" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  std::string inputImageName = argv[1];
-  std::string outputImageName = argv[2];
-  double variance = atof(argv[3]);
-  std::string execute = showParametersInfo(inputImageName, outputImageName, variance);
-  if(execute=="y" || execute=="Y"){
-    //According to Itk documentation it is better to have an ITK image float as the output of the filter
-    //In this case it has been left as an int image to be able to visualize the result as a PNG image
-    ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
-    reader->SetFileName(inputImageName);
-    discreteGaussianFilterType::Pointer discreteGaussian = discreteGaussianFilterType::New();
-    discreteGaussian->SetInput( reader->GetOutput() );
-    discreteGaussian->SetVariance(variance);
-    ItkImageType::Pointer discreteGaussianFilterResult = discreteGaussian->GetOutput();
-    ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
-    writer->SetFileName(outputImageName);
-    writer->SetInput(discreteGaussianFilterResult);
-    writer->Update();
-    
-    return EXIT_SUCCESS;
-  }else{
-    return EXIT_FAILURE;
-  }
-
+  ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
+  reader->SetFileName(inputImageName);
+  discreteGaussianFilterType::Pointer discreteGaussian = discreteGaussianFilterType::New();
+  discreteGaussian->SetInput( reader->GetOutput() );
+  discreteGaussian->SetVariance(variance);
+  CastFilterType::Pointer castfilter = CastFilterType::New();
+  castfilter->SetInput(discreteGaussian->GetOutput());
+  castfilter->Update();
+  return castfilter->GetOutput();
 }
-
-

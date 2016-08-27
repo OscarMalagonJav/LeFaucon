@@ -1,17 +1,6 @@
-#include "itkImage.h"
-#include "itkImageFileWriter.h"
-#include "itkImageFileReader.h"
-#include "itkBinomialBlurImageFilter.h"
-#include "itkImageRegionConstIterator.h"
-#include <typeinfo>
-#include "itkRescaleIntensityImageFilter.h"
+#include "AdditionHistogram.h"
 
-typedef itk::Image< unsigned char, 2 >   ItkImageType;
-typedef itk::ImageFileReader< ItkImageType >  ImageFileReaderType;
-typedef itk::ImageFileWriter<ItkImageType> ImageFileWriterType;
-typedef itk::RescaleIntensityImageFilter< ItkImageType, ItkImageType > RescaleFilterType;
-
-std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int value)
+/*std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int value)
 {
   std::string execute= "";
   std::cout<<"Parameters"<<std::endl;
@@ -22,62 +11,37 @@ std::string showParametersInfo(std::string inputImageName,std::string outputImag
   std::cout<<"Continue?...(Y/N)"<<std::endl;
   std::cin>>execute;
   return execute;
-}
+}*/
 
-int main(int argc, char * argv[])
+ItkImageType::Pointer applyAdditionHistogram(std::string inputImageName, int value)
 {
-  if( argc < 4 )
-    {
-    std::cerr << "Usage" << std::endl;
-    std::cerr << argv[0] << " inputImageName outputImageName.extension value" << std::endl;
-    return EXIT_FAILURE;
-    }
+  ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
+  reader->SetFileName( inputImageName );
+  reader->Update();
+  ItkImageType::Pointer itkInputImage = reader->GetOutput();
+  ItkImageType::Pointer ItkResultImage = itkInputImage;
+  ItkImageType::RegionType RegionType = itkInputImage->GetLargestPossibleRegion();
+  ItkImageType::SizeType regionSize = RegionType.GetSize();
 
-  std::string inputImageName = argv[1];
-  std::string outputImageName = argv[2];
-  int value = atoi(argv[3]);
-  std::string execute = showParametersInfo(inputImageName, outputImageName, value);
-  if(execute=="y" || execute=="Y")
+  for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++)
   {
-
-
-      ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
-      reader->SetFileName( inputImageName.c_str() );
-      reader->Update();
-      ItkImageType::Pointer itkInputImage = reader->GetOutput();
-      ItkImageType::Pointer ItkResultImage = itkInputImage;
-      ItkImageType::RegionType RegionType = itkInputImage->GetLargestPossibleRegion();
-      ItkImageType::SizeType regionSize = RegionType.GetSize();
-
-      for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++)
+      for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++)
       {
-          for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++)
-          {
-              ItkImageType::IndexType pixelIndex;
-              pixelIndex[0] = rowIndex;
-              pixelIndex[1] = columnIndex;
-                if((int)ItkResultImage->GetPixel(pixelIndex) + value > 255){
-                  ItkResultImage->SetPixel(pixelIndex,255);
-                }else{
-                  ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) + value));
-                }
-          }
+          ItkImageType::IndexType pixelIndex;
+          pixelIndex[0] = rowIndex;
+          pixelIndex[1] = columnIndex;
+            if((int)ItkResultImage->GetPixel(pixelIndex) + value > 255){
+              ItkResultImage->SetPixel(pixelIndex,255);
+            }else{
+              ItkResultImage->SetPixel(pixelIndex, ((int)ItkResultImage->GetPixel(pixelIndex) + value));
+            }
       }
-
-      RescaleFilterType::Pointer rescaleFilter = RescaleFilterType::New();
-      rescaleFilter->SetInput(ItkResultImage);
-      rescaleFilter->SetOutputMinimum(0);
-      rescaleFilter->SetOutputMaximum(255);
-
-      ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
-      writer->SetFileName(outputImageName);
-      writer->SetInput(rescaleFilter->GetOutput());
-      writer->Update();
-      return EXIT_SUCCESS;
-
-  }else{
-
-    return EXIT_FAILURE;
-
   }
+
+  RescaleFilterType::Pointer rescaleFilter = RescaleFilterType::New();
+  rescaleFilter->SetInput(ItkResultImage);
+  rescaleFilter->SetOutputMinimum(0);
+  rescaleFilter->SetOutputMaximum(255);
+  rescaleFilter->Update();
+  return rescaleFilter->GetOutput();
 }

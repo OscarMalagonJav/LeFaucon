@@ -5,5 +5,6 @@ if(UNIX)
 endif()
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
-add_executable(BinaryImage MACOSX_BUNDLE BinaryImage.cxx)
+add_executable(BinaryImage MACOSX_BUNDLE main.cxx BinaryImage.cxx BinaryImage.h
+)
 target_link_libraries(BinaryImage ${ITK_LIBRARIES})
