@@ -1,3 +1,0 @@
-/home/oscarmalagon/Escritorio/LeFaucon/Características/HoughTransforms/Lines/build/CMakeFiles/edit_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Características/HoughTransforms/Lines/build/CMakeFiles/rebuild_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Características/HoughTransforms/Lines/build/CMakeFiles/HoughLines.dir
