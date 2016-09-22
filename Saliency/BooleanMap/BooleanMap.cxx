@@ -1,11 +1,12 @@
 #include "BooleanMap.h"
 #include "booleanMapTypes.h"
+#include <math.h> 
 
-std::list<UnsignedCharImageType::Pointer> generateBooleanMaps(std::list<std::string> listOfFeatureImagesPath, std::list<int> listOfThreshold)
+std::list<UnsignedCharImageType::Pointer> generateBooleanMaps(std::list<std::string> listOfFeatureImagesPath, int numberOfThresholds)
 {
     std::list<UnsignedCharImageType::Pointer> listOfBooleanMaps;
     std::list<UnsignedCharImageType::Pointer> listOfFeatureImages = loadFeatureImages(listOfFeatureImagesPath);
-    
+    std::list<int> listOfThreshold = calculateListOfThresholds(numberOfThresholds);
     std::list<UnsignedCharImageType::Pointer>::iterator itFeatures = listOfFeatureImages.begin();
     std::list<std::string>::iterator itThreshold = listOfThreshold.begin();
 
@@ -17,24 +18,13 @@ std::list<UnsignedCharImageType::Pointer> generateBooleanMaps(std::list<std::str
     {
         for(itFeatures; itFeatures != listOfFeatureImages.end(); itFeatures++)
         {
-            UnsignedCharImageType::Pointer temporalImage = UnsignedCharImageType::New();
-            for(unsigned int rowIndex = 0; rowIndex< regionSize[0]; rowIndex++)
-            {
-                for(unsigned int columnIndex =0; columnIndex  < regionSize[1]; columnIndex++)
-                {
-                    UnsignedCharImageType::IndexType pixelIndex;
-                    pixelIndex[0] = rowIndex;
-                    pixelIndex[1] = columnIndex;
-                    if((int) *itFeatures->GetPixel(pixelIndex)>= *itThreshold )
-                    {
-                        temporalImage->SetPixel(pixelIndex,255);
-                    }else{
-                        temporalImage->SetPixel(pixelIndex,0);
-                    }
-                }
-            }
-            temporalImage->Update();
-            listOfBooleanMaps.insert(temporalImage->GetOutput());
+            ThresholdFilterType::Pointer thresholdFilter = FilterType::New();
+            thresholdFilter->SetInput( *itFeatures->GetOutput() );
+            thresholdFilter->SetUpperThreshold( *itThreshold );
+            thresholdFilter->SetOutsideValue( 255 );
+            thresholdFilter->SetInsideValue( 0 );
+            thresholdFilter->Update();
+            listOfBooleanMaps.insert(thresholdFilter->GetOutput());
         }
     }
     return listOfBooleanMaps;
@@ -53,4 +43,19 @@ std::list<UnsignedCharImageType::Pointer> loadFeatureImages(std::list<std::strin
         listOfImages.insert(reader->GetOutput());
     }
     return listOfImages;
+}
+
+
+std::list<int> calculateListOfThresholds(int numberOfThresholds) {
+    if(numberOfThresholds <= 0)
+    {
+        return NULL;
+    }
+    std::list<int> listOfThresholds;
+    int delta = floor(255/ numberOfThresholds);
+    for (int index = 1; index <= numberOfThresholds; index++)
+    {
+        listOfThresholds.insert(delta*index);
+    }
+    return listOfThresholds;
 }
