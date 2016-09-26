@@ -7,8 +7,8 @@ std::list<UnsignedCharImageType::Pointer> generateBooleanMaps(std::list<std::str
     std::list<UnsignedCharImageType::Pointer> listOfBooleanMaps;
     std::list<UnsignedCharImageType::Pointer> listOfFeatureImages = loadFeatureImages(listOfFeatureImagesPath);
     std::list<int> listOfThreshold = calculateListOfThresholds(numberOfThresholds);
-    std::list<UnsignedCharImageType::Pointer>::iterator itFeatures = listOfFeatureImages.begin();
     std::list<std::string>::iterator itThreshold = listOfThreshold.begin();
+    std::list<UnsignedCharImageType::Pointer>::iterator itFeatures = listOfFeatureImages.begin();
 
     for(itThreshold; itThreshold != listOfThreshold.end(); itThreshold++)
     {
@@ -16,8 +16,12 @@ std::list<UnsignedCharImageType::Pointer> generateBooleanMaps(std::list<std::str
         {
             UnsignedCharImageType::Pointer booleanImage        = thresholdingImage( *itThreshold, *itFeatures->GetOutput(), false);
             UnsignedCharImageType::Pointer inverseBooleanImage = thresholdingImage( *itThreshold, *itFeatures->GetOutput(), true);
-            
-            //listOfBooleanMaps.insert(thresholdFilter->GetOutput());
+            booleanImage->Update();
+            inverseBooleanImage->Update();
+            UnsignedCharImageType::Pointer openingBooleanImage = openingMorphologicalOperation(booleanImage->GetOutput(), false);
+            UnsignedCharImageType::Pointer openingInverseBooleanImage = openingMorphologicalOperation(inverseBooleanImage->GetOutput(), true);
+            listOfBooleanMaps.insert(openingBooleanImage);
+            listOfBooleanMaps.insert(openingInverseBooleanImage);
         }
     }
     return listOfBooleanMaps;
@@ -40,7 +44,7 @@ std::list<UnsignedCharImageType::Pointer> loadFeatureImages(std::list<std::strin
 std::list<int> calculateListOfThresholds(int numberOfThresholds) {
     if(numberOfThresholds <= 0)
     {
-        return NULL;
+        return EXIT_FAILURE ;
     }
     std::list<int> listOfThresholds;
     int delta = floor(255 / numberOfThresholds);
@@ -66,4 +70,27 @@ UnsignedCharImageType::Pointer thresholdingImage(int thresholdValue, UnsignedCha
     }
     thresholdFilter->Update();
     return thresholdImage->GetOutput();
+}
+
+UnsignedCharImageType::Pointer openingMorphologicalOperation(UnsignedCharImageType::Pointer inputImage, bool isNegative)
+{
+  KernelType circularKernel;
+  KernelType::SizeType circularKernelSize;
+  circularKernelSize.Fill( 8 );
+  circularKernel.SetRadius(circularKernelSize);
+  circularKernel.CreateStructuringElement();
+
+  OpeningMorphologicalOperationFilter::Pointer openingFilter = OpeningMorphologicalOperationFilter::New();
+  openingFilter->SetInput( inputImage->GetOutput() );
+  openingFilter->SetKernel( ball );
+  if(isNegative)
+  {
+    openingFilter->SetForegroundValue( 0 );
+    openingFilter->SetBackgroundValue( 255 );
+  }else{
+    openingFilter->SetForegroundValue( 255 );
+    openingFilter->SetBackgroundValue( 0 );
+  }
+  openingFilter->Update();
+  return openingFilter->GetOutput();
 }
