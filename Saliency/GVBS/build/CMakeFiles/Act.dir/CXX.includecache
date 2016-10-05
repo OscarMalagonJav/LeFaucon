@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/oscarmalagon/Escritorio/LeFaucon/Saliency/GVBS/ActivationMap.cxx
+iostream
+-
+cstdlib
+-
+

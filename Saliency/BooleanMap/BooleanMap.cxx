@@ -57,7 +57,7 @@ std::list<int> calculateListOfThresholds(int numberOfThresholds) {
 
 UnsignedCharImageType::Pointer thresholdingImage(int thresholdValue, UnsignedCharImageType::Pointer inputImage, bool isNegative)
 {
-    ThresholdFilterType::Pointer thresholdFilter = FilterType::New();
+    ThresholdFilterType::Pointer thresholdFilter = ThresholdFilterType::New();
     thresholdFilter->SetInput( inputImage );
     thresholdFilter->SetUpperThreshold( thresholdValue );
     if(isNegative)
