@@ -1,3 +1,0 @@
-/home/oscarmalagon/Escritorio/LeFaucon/Saliency/GVBS/build/CMakeFiles/edit_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Saliency/GVBS/build/CMakeFiles/rebuild_cache.dir
-/home/oscarmalagon/Escritorio/LeFaucon/Saliency/GVBS/build/CMakeFiles/GBVS.dir

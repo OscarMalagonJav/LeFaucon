@@ -5,6 +5,5 @@ if(UNIX)
 endif()
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
-add_executable(GBVS MACOSX_BUNDLE ActivationMap2.cxx )
+add_executable(GBVS MACOSX_BUNDLE GBVSImpl.cxx )
 target_link_libraries(GBVS ${ITK_LIBRARIES})
-
