@@ -97,10 +97,6 @@ float** createAdjacencyMatrix(UnsignedCharImageType::Pointer itkInputImage, floa
                     destin.value = (int)itkInputImage->GetPixel(pixelIndexAux);
                     weight = calculateWeight(origin, destin,ro);
                     adjacencyMatrix[adjacencyRow][adjacencyColumn] = weight;
-                    //std::cout<< "( " << rowIndex << " , " << columnIndex << ") --> (" << relativeRowIndex << " , " << relativeColumnIndex << ")   " << origin.value << "--" << destin.value<< "-->"<< calculateWeight(origin, destin) << std::endl;
-                    /*std::cout<< "( " << rowIndex << " , " << columnIndex << ") --> (" << i << " , " << j << ")   " << calculateWeight(origin, destin) << "   " << adjacencyMatrix[i][j];
-                    std::cout<< std::endl << "*****************************************"<< std::endl;
-                    std::cout<< i << " , " << j <<" -> " << adjacencyMatrix[i][j] << std::endl ;*/
                     adjacencyRow++;
                     if (adjacencyRow > (r * c) - 1) {
                         adjacencyRow = 0;
