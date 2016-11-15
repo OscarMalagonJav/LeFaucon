@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
     float upperThreshold = atof(argv[4]);
     float lowerThreshold = atof(argv[5]);
 
-    std::string execute = "y";//showParametersInfo(argv);
+    std::string execute = "y";
     if(execute=="y" || execute=="Y"){
         UnsignedCharImageType::Pointer canny =applyCannyEdgeDetector(inputImageName, variance, upperThreshold,lowerThreshold);
         ImageFileWriterType::Pointer writer = ImageFileWriterType::New();

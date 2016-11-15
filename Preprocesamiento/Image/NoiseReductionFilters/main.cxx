@@ -14,7 +14,7 @@ int main(int argc, char * argv[])
   std::string outputImageName = argv[2];
   int repetitions = atoi(argv[3]);
 
-  std::string execute= "y";//showParametersInfo(inputImageName, outputImageName, repetitions);
+  std::string execute= "y";
   if(execute=="y" || execute=="Y"){
 
     ItkImageType::Pointer smoothingFilterResult = applyNoiseBinomialBlur(inputImageName, repetitions);

@@ -9,10 +9,9 @@ int main(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  //Argumentos
   std::string inputImageName = argv[1];
   std::string outputImageName = argv[2];
-  std::string execute = "y";//showParametersInfo(inputImageName, outputImageName);
+  std::string execute = "y";
   if(execute=="y" || execute=="Y")
   {
       ImageFileReaderType::Pointer reader = ImageFileReaderType::New();

@@ -1,18 +1,5 @@
 #include "Thresholding.h"
 
-/*std::string showParametersInfo(std::string inputImageName,std::string outputImageName, int threshold)
-{
-  std::string execute= "";
-  std::cout<<"Parameters"<<std::endl;
-  std::cout<< "Input image name: "<< inputImageName <<std::endl;
-  std::cout<< "Output image name: "<< outputImageName <<std::endl;
-  std::cout<< "Threshold.........: "<< threshold <<std::endl
-  <<"*********************************************"<<std::endl;
-  std::cout<<"Continue?...(Y/N)"<<std::endl;
-  std::cin>>execute;
-  return execute;
-}*/
-
 ItkImageType::Pointer thresholdImage(std::string inputImageName, int threshold){
   ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
   reader->SetFileName(inputImageName);

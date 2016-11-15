@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
   std::string outputImageName = argv[2];
   int lowerThreshold = atoi(argv[3]);
   int upperThreshold = atoi(argv[4]);
-  std::string execute = "y";//showParametersInfo(inputImageName, outputImageName,lowerThreshold, upperThreshold);
+  std::string execute = "y";
   if(execute=="y" || execute=="Y")
   {
       ItkImageType::Pointer binaryImage = createBinayImage(inputImageName,lowerThreshold,upperThreshold);

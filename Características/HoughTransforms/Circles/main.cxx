@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
 	float discRadiusRatio = atof(argv[8]);
 	float variance = atof(argv[9]);
 	float sweepAngle = atof(argv[10]);
-	std::string execute = "y";//showParametersInfo(argv);
+	std::string execute = "y";
     if(execute=="y" || execute=="Y"){
 		ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
         UnsignedCharImageType::Pointer  houghCirclesSearching = 
@@ -43,4 +43,4 @@ int main(int argc, char * argv[])
   }else{
     return EXIT_FAILURE;
   }
-}//end main
+}

@@ -10,11 +10,10 @@ int main(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  //Argumentos
   std::string inputImageName = argv[1];
   std::string outputImageName = argv[2];
   int maximum = atoi(argv[3]);
-  std::string execute = "y";//showParametersInfo(inputImageName, outputImageName, maximum);
+  std::string execute = "y";
   if(execute=="y" || execute=="Y")
   {
 

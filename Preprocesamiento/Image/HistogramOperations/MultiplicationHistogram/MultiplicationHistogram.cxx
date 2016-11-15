@@ -1,17 +1,5 @@
 #include "MultiplicationHistogram.h"
 
-/*std::string showParametersInfo(std::string inputImageName,std::string outputImageName, float value)
-{
-  std::string execute= "";
-  std::cout<<"Parameters"<<std::endl;
-  std::cout<< "Input image name: "<< inputImageName <<std::endl;
-  std::cout<< "Output image name: "<< outputImageName <<std::endl;
-  std::cout<< "Value.........: "<< value <<std::endl
-  <<"*********************************************"<<std::endl;
-  std::cout<<"Continue?...(Y/N)"<<std::endl;
-  std::cin>>execute;
-  return execute;
-}*/
 ItkImageType::Pointer applyMultiplicationHistogram(std::string inputImageName, float value)
 {
   ImageFileReaderType::Pointer reader = ImageFileReaderType::New();
@@ -22,9 +10,9 @@ ItkImageType::Pointer applyMultiplicationHistogram(std::string inputImageName, f
   ItkImageType::RegionType RegionType = itkInputImage->GetLargestPossibleRegion();
   ItkImageType::SizeType regionSize = RegionType.GetSize();
 
-  for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++) //Itera sobre las filas
+  for(unsigned int rowIndex = 0; rowIndex < regionSize[0]; rowIndex++) 
   {
-      for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++) //Itera sobre las columnas
+      for(unsigned int columnIndex = 0; columnIndex < regionSize[1]; columnIndex++) 
       {
           ItkImageType::IndexType pixelIndex;
           pixelIndex[0] = rowIndex;

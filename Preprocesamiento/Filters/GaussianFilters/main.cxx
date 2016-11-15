@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
   std::string inputImageName = argv[1];
   std::string outputImageName = argv[2];
   double variance = atof(argv[3]);
-  std::string execute = "y";//showParametersInfo(inputImageName, outputImageName, variance);
+  std::string execute = "y";
   if(execute=="y" || execute=="Y"){
     ItkImageType::Pointer discreteGaussianFilterResult = applyDiscreteGaussianFilter(inputImageName, variance);
     ImageFileWriterType::Pointer writer = ImageFileWriterType::New();
